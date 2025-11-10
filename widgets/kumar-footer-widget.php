@@ -2185,33 +2185,43 @@ class Kumar_Footer_Widget extends \Elementor\Widget_Base {
 
         /* Mobile Accordion - Fixed for Footer Sections */
         @media (max-width: 768px) {
+            /* Center the entire footer section */
+            .kumar-footer-section {
+                text-align: center;
+            }
+
             /* Make entire heading clickable with arrow */
             .kumar-footer-section h4 {
                 position: relative;
                 cursor: pointer;
                 user-select: none;
-                padding-right: 35px;
+                padding: 0 40px 12px 40px !important;
                 width: 100%;
-                text-align: center;
-                display: block;
+                text-align: center !important;
+                display: block !important;
+                margin-bottom: 0 !important;
             }
 
-            /* Arrow indicator - positioned on the right */
+            /* Completely override desktop underline ::after and replace with arrow */
             .kumar-footer-section h4::after {
-                content: '▼';
-                position: absolute;
-                right: 0;
-                top: 50%;
-                transform: translateY(-50%);
-                font-size: 0.9em;
-                color: #D4AF37;
-                transition: transform 0.3s ease;
-                display: inline-block;
+                content: '▼' !important;
+                position: absolute !important;
+                right: 0 !important;
+                top: 0 !important;
+                left: auto !important;
+                bottom: auto !important;
+                width: auto !important;
+                height: auto !important;
+                transform: none !important;
+                font-size: 1.2em !important;
+                color: #D4AF37 !important;
+                transition: transform 0.3s ease !important;
+                background: none !important;
             }
 
             /* Rotate arrow when active */
             .kumar-footer-section h4.active::after {
-                transform: translateY(-50%) rotate(-180deg);
+                transform: rotate(180deg) !important;
             }
 
             /* Hide footer links by default on mobile */
