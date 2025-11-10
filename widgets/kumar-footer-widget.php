@@ -2190,19 +2190,20 @@ class Kumar_Footer_Widget extends \Elementor\Widget_Base {
                 position: relative;
                 cursor: pointer;
                 user-select: none;
-                padding-right: 30px;
+                padding-right: 35px;
                 width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
+                text-align: center;
+                display: block;
             }
 
-            /* Arrow indicator */
+            /* Arrow indicator - positioned on the right */
             .kumar-footer-section h4::after {
                 content: '▼';
                 position: absolute;
                 right: 0;
-                font-size: 0.8em;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 0.9em;
                 color: #D4AF37;
                 transition: transform 0.3s ease;
                 display: inline-block;
@@ -2210,7 +2211,7 @@ class Kumar_Footer_Widget extends \Elementor\Widget_Base {
 
             /* Rotate arrow when active */
             .kumar-footer-section h4.active::after {
-                transform: rotate(-180deg);
+                transform: translateY(-50%) rotate(-180deg);
             }
 
             /* Hide footer links by default on mobile */
