@@ -2182,37 +2182,72 @@ class Kumar_Footer_Widget extends \Elementor\Widget_Base {
             }
         }
 
-        
-        /* Mobile Accordion - Simple Implementation */
+
+        /* Mobile Accordion - Fixed for Footer Sections */
         @media (max-width: 768px) {
-            .kumar-footer-column h3 {
+            /* Make entire heading clickable with arrow */
+            .kumar-footer-section h4 {
                 position: relative;
                 cursor: pointer;
                 user-select: none;
-                padding-right: 30px;
+                padding-right: 35px;
+                width: 100%;
+                text-align: center;
+                display: block;
             }
-            
-            .kumar-footer-column h3::after {
+
+            /* Arrow indicator - positioned on the right */
+            .kumar-footer-section h4::after {
                 content: '▼';
                 position: absolute;
                 right: 0;
-                font-size: 0.8em;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 0.9em;
+                color: #D4AF37;
                 transition: transform 0.3s ease;
+                display: inline-block;
             }
-            
-            .kumar-footer-column h3.active::after {
-                transform: rotate(-180deg);
+
+            /* Rotate arrow when active */
+            .kumar-footer-section h4.active::after {
+                transform: translateY(-50%) rotate(-180deg);
             }
-            
-            .kumar-footer-links {
+
+            /* Hide footer links by default on mobile */
+            .kumar-footer-section .kumar-footer-links {
                 max-height: 0;
                 overflow: hidden;
-                transition: max-height 0.3s ease;
+                transition: max-height 0.4s ease;
+                margin-top: 0;
             }
-            
-            .kumar-footer-links.active {
+
+            /* Show footer links when active */
+            .kumar-footer-section .kumar-footer-links.active {
                 max-height: 500px;
                 margin-top: 20px;
+            }
+
+            /* Hide newsletter content (paragraph and form) by default on mobile */
+            .kumar-newsletter p,
+            .kumar-newsletter .kumar-newsletter-form {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.4s ease;
+                margin: 0;
+            }
+
+            /* Show newsletter content when active */
+            .kumar-newsletter p.active,
+            .kumar-newsletter .kumar-newsletter-form.active {
+                max-height: 300px;
+                opacity: 1;
+                margin-bottom: 20px;
+            }
+
+            .kumar-newsletter p.active {
+                margin-bottom: 20px;
             }
         }
         </style>
@@ -2262,27 +2297,59 @@ class Kumar_Footer_Widget extends \Elementor\Widget_Base {
                 });
             }
             
-            // Mobile accordion - simple
+            // Mobile accordion - Fixed for footer sections
             function initAccordion() {
                 if (window.innerWidth <= 768) {
-                    document.querySelectorAll('.kumar-footer-column h3').forEach(title => {
+                    // Target all h4 headings in footer sections (Collections, Services, Newsletter)
+                    document.querySelectorAll('.kumar-footer-section h4').forEach(title => {
+                        // Make entire heading clickable
+                        title.style.cursor = 'pointer';
+
                         title.addEventListener('click', function() {
+                            // Toggle active class on heading
                             this.classList.toggle('active');
-                            const links = this.nextElementSibling;
-                            if (links && links.classList.contains('kumar-footer-links')) {
-                                links.classList.toggle('active');
+
+                            // Find the next sibling which should be the links container or form
+                            const nextElement = this.nextElementSibling;
+
+                            // Toggle active class on the links/content
+                            if (nextElement) {
+                                if (nextElement.classList.contains('kumar-footer-links')) {
+                                    nextElement.classList.toggle('active');
+                                } else if (nextElement.tagName === 'P' || nextElement.tagName === 'FORM') {
+                                    // For newsletter section, toggle the paragraph and form
+                                    let sibling = nextElement;
+                                    while (sibling) {
+                                        if (sibling.classList && sibling.classList.contains('kumar-footer-links')) {
+                                            break;
+                                        }
+                                        if (sibling.classList) {
+                                            sibling.classList.toggle('active');
+                                        }
+                                        sibling = sibling.nextElementSibling;
+                                        if (sibling && sibling.tagName === 'H4') break;
+                                    }
+                                }
                             }
                         });
                     });
                 }
             }
             initAccordion();
-            
+
+            // Reset accordion state on desktop
             window.addEventListener('resize', function() {
                 if (window.innerWidth > 768) {
                     document.querySelectorAll('.kumar-footer-links').forEach(links => {
+                        links.classList.remove('active');
                         links.style.maxHeight = 'none';
                     });
+                    document.querySelectorAll('.kumar-footer-section h4').forEach(title => {
+                        title.classList.remove('active');
+                    });
+                } else {
+                    // Re-initialize on mobile
+                    initAccordion();
                 }
             });
             
